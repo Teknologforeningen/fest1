@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+      <div class="register">
+        <h2>Förköp av efterfestbiljetter</h2>
+            <form class="register_form" method="post">
+              {% csrf_token %}
+              <div class="form-group">
+                <label for="first_name">Förnamn</label>
+                <input type="text" class="form-control" name="first_name" id="first_name" placeholder="Förnamn">
+              </div>
+              <div class="form-group">
+                <label for="last_name">Efternamn</label>
+                <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Efternamn">
+              </div>
+              <div class="form-group">
+                <label for="last_name">E-postadress</label>
+                <input type="text" class="form-control" name="email" id="email" placeholder="E-postadress">
+              </div>
+              <button type="submit" class="btn btn-primary">Skicka</button>
+            </form>
+
+      </div>
+
+{% endblock content %}

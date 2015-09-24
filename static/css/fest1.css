@@ -1,0 +1,91 @@
+body {
+  padding-top: 50px;
+  font-family: 'Montserrat', sans-serif;
+  background: url('../images/bg.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  color: white;
+
+}
+.starter-template {
+  padding: 40px 15px;
+  text-align: center;
+}
+
+.register_form {
+    width: 60%;
+}
+
+.logo_container {
+    width: 100%;
+}
+
+@media (min-width: 450px) {
+    .logo {
+	text-align: center;
+        width: 450px;
+	margin: auto;
+    }
+}
+
+@media (max-width: 450px) {
+    .logo {
+	text-align: center;
+        width: 90%;
+	margin: auto;
+    }
+}
+
+.menu {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.menu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+}
+
+.menu ul li {
+    display: inline;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.menu ul li a {
+    color: white;
+    text-transform: uppercase;
+    font-size: 120%;
+}
+
+.main_content {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding: 30px;
+    background-color:rgba(0,0,0,0.4);
+}
+
+.footer_logo {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.intro {
+    margin-top: 4%;
+    margin-bottom: 30px;
+    width: 50%;
+}
+
+@media (max-width: 600px) {
+  .intro {
+      width: 80%;
+  }
+}
+
+.buttons {
+    margin-bottom: 40px;
+}

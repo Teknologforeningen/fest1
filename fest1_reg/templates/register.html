@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load reg_tags %}
+{% block content %}
+
+      <div class="register">
+        <h2>Anmälning</h2>
+            <form class="register_form" method="post">
+              {% csrf_token %}
+              <div class="form-group">
+                <label for="first_name">Förnamn</label>
+                <input type="text" class="form-control" name="first_name" id="first_name" placeholder="Förnamn">
+              </div>
+              <div class="form-group">
+                <label for="last_name">Efternamn</label>
+                <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Efternamn">
+              </div>
+              <div class="form-group">
+                <label for="last_name">E-postadress</label>
+                <input type="text" class="form-control" name="email" id="email" placeholder="E-postadress">
+              </div>
+              <div class="form-group">
+                <label for="organization">Organisation</label>
+                <select name="organization" id="organization" class="form-control">
+                    {% for key, value in organizations_list.items %}
+                        <option value="{{ key }}">{{ value }}</option>
+                    {% endfor %}
+
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="avec">Avec</label>
+                  <p><strong>Obs:</strong> Avec måste anmäla sig skilt!</p>
+                <input type="text" class="form-control" name="avec" id="avec" placeholder="Avec">
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" name="alcohol" id="alcohol"> Alkohol
+                </label>
+              </div>
+              <div class="form-group">
+                <label for="comment">Kommentarer</label>
+                <textarea class="form-control" name="comment" id="comment" rows="3"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Skicka</button>
+            </form>
+
+      </div>
+
+{% endblock content %}
