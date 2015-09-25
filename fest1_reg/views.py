@@ -11,7 +11,7 @@ def homepage(request):
     return render(request, "homepage.html")
 
 def register(request):
-    if int(time.time()) > 1443171600:
+    if int(time.time()) > 0:
         if request.method == 'POST':
             first_name = request.POST['first_name']
             last_name = request.POST['last_name']
@@ -24,18 +24,19 @@ def register(request):
             organization_code = request.POST['organization']
             organization = Organization.objects.get(pk=organization_code)
             avec = request.POST['avec']
-            alcohol = request.POST.get('alcohol', False)
-            alcohol_sv = "Nej"
-            price = "18 €"
-            if alcohol:
-                alcohol_sv = "Ja"
-                price = "20 €"
+            alcoholfree = request.POST.get('alcoholfree', False)
+            alcoholfree_sv = "Nej"
+            price = "20 €"
+            if alcoholfree:
+                alcoholfree_sv = "Ja"
+                price = "18 €"
+            diet = request.POST['diet']
             comment = request.POST['comment']
-            new_participant = Participant(first_name=first_name, last_name=last_name, email=email, organization=organization, avec=avec, alcohol=alcohol, comment=comment)
+            new_participant = Participant(first_name=first_name, last_name=last_name, email=email, organization=organization, avec=avec, alcoholfree=alcoholfree, diet=diet, comment=comment)
             new_participant.save()
             subject, sender, recipient = 'Anmälan till Fest 1', 'Helena Hansson <phuxmastare@teknologforeningen.fi>', email
 
-            content = "Hej " + first_name + " " + last_name + ",\n\nDin anmälning till Fest 1 har registrerats:\nOrganisation: " + organization.name + "\nAvec: " + avec + "\nAlkohol: " + alcohol_sv + "\nKommentarer: " + comment + \
+            content = "Hej " + first_name + " " + last_name + ",\n\nDin anmälning till Fest 1 har registrerats:\nOrganisation: " + organization.name + "\nAvec: " + avec + "\nAlkoholfri: " + alcoholfree_sv + "\nAllergier/specialdiet: " + diet + "\nKommentarer: " + comment + \
                       "\n\nVänligen betala för din sitz på förhand senast 7.10.\nKonto: FI51 4055 1020 1726 92\nMottagare: Helena Hansson\nMeddelande: Fest1, " + first_name + " " + last_name + "\nSumma: " + \
                       price + "\n\nVar beredd på att kunna bestyrka din identitet!\nVälkommen!"
             send_mail(subject, content, sender, [email], fail_silently=False)
@@ -52,7 +53,7 @@ def register(request):
         return render(request, "soon.html")
 
 def afterparty(request):
-    if int(time.time()) > 1443171600:
+    if int(time.time()) > 0:
         if request.method == 'POST':
             first_name = request.POST['first_name']
             last_name = request.POST['last_name']

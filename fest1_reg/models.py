@@ -11,7 +11,8 @@ class Participant(models.Model):
     organization = models.ForeignKey('Organization', db_column='participants')
     email = models.EmailField()
     avec = models.CharField(max_length=128)
-    alcohol = models.BooleanField()
+    diet = models.CharField(max_length=128)
+    alcoholfree = models.BooleanField()
     comment = models.TextField()
 
 class AfterpartyParticipant(models.Model):
