@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inloggning</title>
+</head>
+<body>
+    <h1>Inloggning</h1>
+    <form class="form" method="post" id="login" action="/i/">
+        {% csrf_token %}
+        <p>Användarnamn: <input name="username" type="text"></p>
+        <p>Lösenord: <input name="password" type="password"></p>
+        <p><button type="submit">Logga in</button></p>
+   </form>
+</body>
+</html>

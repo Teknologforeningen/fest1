@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PhuxK:s administrationspanel</title>
+</head>
+<body>
+    <h1>Anmälda till sitzen</h1>
+    <table border="1">
+        <tr>
+            <td>#</td><td>Förnamn</td><td>Efternamn</td><td>Organisation</td><td>E-post</td><td>Avec</td><td>Alkoholfri</td><td>Allergier</td><td>Kommentarer</td>
+        </tr>
+        {% for i in participant_list %}
+        <tr>
+            <td>{{ forloop.counter }}</td><td>{{ i.first_name }}</td><td>{{ i.last_name }}</td><td>{{ i.organization.name }}</td><td><a href="mailto:{{ i.email }}">{{ i.email }}</a></td><td>{{ i.avec }}</td><td>{{ i.alcoholfree }}</td><td>{{ i.diet }}</td><td>{{ i.comment }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <h1>Anmälda till efterfesten</h1>
+        <table border="1">
+            <tr>
+                <td>#</td><td>Förnamn</td><td>Efternamn</td><td>E-post</td>
+            </tr>
+            {% for i in afterparty_list %}
+            <tr>
+                <td>{{ forloop.counter }}</td><td>{{ i.first_name }}</td><td>{{ i.last_name }}</td><td><a href="mailto:{{ i.email }}">{{ i.email }}</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+</body>
+</html>

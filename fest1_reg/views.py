@@ -4,6 +4,7 @@ from fest1_reg.models import *
 from django.core.validators import validate_email
 from django.core.mail import send_mail
 from django import forms
+from django.contrib.auth import login, authenticate
 import time
 
 # Create your views here.
@@ -81,3 +82,23 @@ def list_page(request):
         reserve += participants[quota:]
         quotas[i+1] = quota
     return render(request, "list.html", {"lists": lists, "quotas": quotas, "reserve": reserve, })
+
+def phuxk(request):
+    if request.user.is_authenticated():
+        participant_list = Participant.objects.all()
+        afterparty_list = AfterpartyParticipant.objects.all()
+        return render(request, "phuxk.html", {"participant_list": participant_list, "afterparty_list": afterparty_list, })
+    else:
+        if request.method == 'POST':
+            username = request.POST['username']
+            password = request.POST['password']
+
+            user = authenticate(username=username, password=password)
+
+            if user is not None:
+                login(request, user)
+                return HttpResponseRedirect("/i/")
+            else:
+                return HttpResponse("Fel i inloggningsuppgifterna")
+        else:
+            return render(request, "login.html")
