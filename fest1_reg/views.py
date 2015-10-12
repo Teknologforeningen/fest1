@@ -36,7 +36,14 @@ def register(request):
             new_participant = Participant(first_name=first_name, last_name=last_name, email=email, organization=organization, avec=avec, alcoholfree=alcoholfree, diet=diet, comment=comment)
             new_participant.save()
             subject, sender, recipient = 'Anmälan till Fest 1', 'Helena Hansson <phuxmastare@teknologforeningen.fi>', email
-
+            if (Participant.objects.filter(organization=organization_code).count() >= Organization.objects.get(pk=organization_code).quota):
+                content = "Hej " + first_name + " " + last_name + ",\n\nDin anmälning till Fest 1 har registrerats. Du är ännu på reservplats och vi meddelar efter sista anmälningsdag om du ryms med på festen!"
+            else:
+                content = "Hej " + first_name + " " + last_name + ",\n\nDin anmälning till Fest 1 har registrerats:\nOrganisation: " + organization.name + "\nAvec: " + avec + "\nAlkoholfri: " + alcoholfree_sv + "\nKommentarer: " + comment + \
+                      "\n\nVänligen betala för din sitz på förhand senast 7.10 (kontrollera från http://www.fest1.fi/participants/ att du inte står på reservkön!).\nKonto: FI51 4055 1020 1726 92\nMottagare: Helena Hansson\nMeddelande: Fest1, " + first_name + " " + last_name + "\nSumma: " + \
+                      price + "\n\nVar beredd på att kunna bestyrka din identitet!\nVälkommen!"
+            send_mail(subject, content, sender, [email], fail_silently=False)
+            return render(request, "soon.html")
         else:
             organizations_list = {}
             for i in range(0, Organization.objects.count()):
@@ -80,13 +87,14 @@ def list_page(request):
         participants = Participant.objects.filter(organization=i+1).order_by('id')
         lists[Organization.objects.get(pk=i+1)] = participants[:quota]
         reserve += participants[quota:]
+        reserve.sort(key = lambda x: x.id)
         quotas[i+1] = quota
     return render(request, "list.html", {"lists": lists, "quotas": quotas, "reserve": reserve, })
 
 def phuxk(request):
     if request.user.is_authenticated():
-        participant_list = Participant.objects.all()
-        afterparty_list = AfterpartyParticipant.objects.all()
+        participant_list = Participant.objects.all().order_by('id')
+        afterparty_list = AfterpartyParticipant.objects.all().order_by('id')
         return render(request, "phuxk.html", {"participant_list": participant_list, "afterparty_list": afterparty_list, })
     else:
         if request.method == 'POST':

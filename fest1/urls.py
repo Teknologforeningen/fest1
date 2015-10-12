@@ -23,5 +23,4 @@ urlpatterns = [
     url(r'^participants/$', 'fest1_reg.views.list_page', name='participants'),
     url(r'^afterparty/$', 'fest1_reg.views.afterparty', name='afterparty'),
     url(r'^i/$', 'fest1_reg.views.phuxk', name='phuxk'),
-
 ]

@@ -26,11 +26,11 @@
               </ol>
           {% endfor %}
       <h2>Reservplatser</h2>
-        <ol>
+	<ol>
         {% for r in reserve %}
             <li>{{ r.first_name }}&nbsp;{{ r.last_name }} ({{ r.organization.name }})</li>
         {% endfor %}
-        </ol>
+	</ol>
       </div>
 
 {% endblock content %}
