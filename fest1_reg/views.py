@@ -35,15 +35,15 @@ def register(request):
             comment = request.POST['comment']
             new_participant = Participant(first_name=first_name, last_name=last_name, email=email, organization=organization, avec=avec, alcoholfree=alcoholfree, diet=diet, comment=comment)
             new_participant.save()
-            subject, sender, recipient = 'Anmälan till Fest 1', 'Helena Hansson <phuxmastare@teknologforeningen.fi>', email
+            subject, sender, recipient = 'Anmälan till Fest 1', 'Annika Lehto <phuxmastare@teknologforeningen.fi>', email
             if (Participant.objects.filter(organization=organization_code).count() >= Organization.objects.get(pk=organization_code).quota):
                 content = "Hej " + first_name + " " + last_name + ",\n\nDin anmälning till Fest 1 har registrerats. Du är ännu på reservplats och vi meddelar efter sista anmälningsdag om du ryms med på festen!"
             else:
                 content = "Hej " + first_name + " " + last_name + ",\n\nDin anmälning till Fest 1 har registrerats:\nOrganisation: " + organization.name + "\nAvec: " + avec + "\nAlkoholfri: " + alcoholfree_sv + "\nKommentarer: " + comment + \
-                      "\n\nVänligen betala för din sitz på förhand senast 7.10 (kontrollera från http://www.fest1.fi/participants/ att du inte står på reservkön!).\nKonto: FI51 4055 1020 1726 92\nMottagare: Helena Hansson\nMeddelande: Fest1, " + first_name + " " + last_name + "\nSumma: " + \
+                      "\n\nVänligen betala för din sitz på förhand senast 7.10 (kontrollera från http://www.fest1.fi/participants/ att du inte står på reservkön!).\nKonto: FI91 1378 3500 1681 88\nMottagare: Annika Lehto\nMeddelande: Fest1, " + first_name + " " + last_name + "\nSumma: " + \
                       price + "\n\nVar beredd på att kunna bestyrka din identitet!\nVälkommen!"
             send_mail(subject, content, sender, [email], fail_silently=False)
-            return render(request, "soon.html")
+            return render(request, "confirm.html")
         else:
             organizations_list = {}
             for i in range(0, Organization.objects.count()):
@@ -68,8 +68,8 @@ def afterparty(request):
 
             new_participant = AfterpartyParticipant(first_name=first_name, last_name=last_name, email=email)
             new_participant.save()
-            subject, sender, recipient = 'Anmälan till Fest 1', 'Helena Hansson <phuxmastare@teknologforeningen.fi>', email
-            content = "Hej " + first_name + " " + last_name + ",\n\nDin anmälning till Fest1 efterfesten har registrerats.\nVänligen betala festen på förhand senast 7.10\nKonto: FI51 4055 1020 1726 92\nMottagare: Helena Hansson\nMeddelande: Fest1, " + first_name + " " + last_name + \
+            subject, sender, recipient = 'Anmälan till Fest 1', 'Annika Lehto <phuxmastare@teknologforeningen.fi>', email
+            content = "Hej " + first_name + " " + last_name + ",\n\nDin anmälning till Fest1 efterfesten har registrerats.\nVänligen betala festen på förhand senast 7.10\nKonto: FI91 1378 3500 1681 88\nMottagare: Annika Lehto\nMeddelande: Fest1, " + first_name + " " + last_name + \
                       "\nSumma: 5 €\n\nFör att få festen till förköpspris ska du ha med ett kvitto från nätbanken på att du har betalat (om vi inte kan se din betalning kostar efterfesten 7€). Var också beredd att bestyrka din identitet!\nVälkommen!"
             send_mail(subject, content, sender, [email], fail_silently=False)
             return render(request, "confirm.html")
