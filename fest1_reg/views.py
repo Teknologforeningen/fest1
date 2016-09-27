@@ -12,7 +12,10 @@ def homepage(request):
     return render(request, "homepage.html")
 
 def register(request):
-    if int(time.time()) > 1474275600:
+	current_time = int(time.time())
+    if current_time > 1475009940:
+	    return render(request, "closed.html")
+    elif current_time > 1474275600:
         if request.method == 'POST':
             first_name = request.POST['first_name']
             last_name = request.POST['last_name']
@@ -56,7 +59,10 @@ def register(request):
         return render(request, "soon.html")
 
 def afterparty(request):
-    if int(time.time()) > 1474275600:
+    current_time = int(time.time())
+    if current_time > 1475009940:
+	    return render(request, "closed.html")
+    elif current_time > 1474275600:
         if request.method == 'POST':
             first_name = request.POST['first_name']
             last_name = request.POST['last_name']
