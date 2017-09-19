@@ -9,7 +9,7 @@ class Participant(models.Model):
     first_name = models.CharField(max_length=64)
     last_name = models.CharField(max_length=64)
     organization = models.ForeignKey('Organization', db_column='participants')
-    email = models.EmailField()
+    email = models.EmailField(unique=True)
     avec = models.CharField(max_length=128)
     diet = models.CharField(max_length=128)
     alcoholfree = models.BooleanField()
