@@ -13,9 +13,9 @@ def homepage(request):
 
 def register(request):
     current_time = int(time.time())
-    if current_time > 1475009940:
+    if current_time > 1509357600:
         return render(request, "closed.html")
-    elif current_time > 1474275600:
+    elif current_time > 1506070800:
         if request.method == 'POST':
             first_name = request.POST['first_name']
             last_name = request.POST['last_name']
@@ -38,12 +38,12 @@ def register(request):
             comment = request.POST['comment']
             new_participant = Participant(first_name=first_name, last_name=last_name, email=email, organization=organization, avec=avec, alcoholfree=alcoholfree, diet=diet, comment=comment)
             new_participant.save()
-            subject, sender, recipient = 'Anmälan till Fest 1', 'Annika Lehto <phuxmastare@teknologforeningen.fi>', email
+            subject, sender, recipient = 'Anmälan till Fest 1', 'Christian Segercrantz <phuxmastare@teknologforeningen.fi>', email
             if (Participant.objects.filter(organization=organization_code).count() >= Organization.objects.get(pk=organization_code).quota):
                 content = "Hej " + first_name + " " + last_name + ",\n\nDin anmälning till Fest 1 har registrerats. Du är ännu på reservplats och vi meddelar efter sista anmälningsdag om du ryms med på festen!"
             else:
                 content = "Hej " + first_name + " " + last_name + ",\n\nDin anmälning till Fest 1 har registrerats:\nOrganisation: " + organization.name + "\nAvec: " + avec + "\nAlkoholfri: " + alcoholfree_sv + "\nKommentarer: " + comment + \
-                      "\n\nVänligen betala för din sitz på förhand senast 27.9 (kontrollera från http://www.fest1.fi/participants/ att du inte står på reservkön!).\nKonto: FI91 1378 3500 1681 88\nMottagare: Annika Lehto\nMeddelande: Fest1, " + first_name + " " + last_name + "\nSumma: " + \
+                      "\n\nVänligen betala för din sitz på förhand senast 3.10 (kontrollera från http://www.fest1.fi/participants/ att du inte står på reservkön!).\nKonto: FI66 4055 0012 5982 11\nMottagare: Christian Segercrantz\nMeddelande: Fest1, " + first_name + " " + last_name + "\nSumma: " + \
                       price + "\n\nVar beredd på att kunna bestyrka din identitet!\nVälkommen!"
             send_mail(subject, content, sender, [email], fail_silently=False)
             return render(request, "confirm.html")
@@ -60,9 +60,9 @@ def register(request):
 
 def afterparty(request):
     current_time = int(time.time())
-    if current_time > 1475009940:
+    if current_time > 1509357600:
         return render(request, "closed.html")
-    elif current_time > 1474275600:
+    elif current_time > 1506070800:
         if request.method == 'POST':
             first_name = request.POST['first_name']
             last_name = request.POST['last_name']
@@ -74,8 +74,8 @@ def afterparty(request):
 
             new_participant = AfterpartyParticipant(first_name=first_name, last_name=last_name, email=email)
             new_participant.save()
-            subject, sender, recipient = 'Anmälan till Fest 1', 'Annika Lehto <phuxmastare@teknologforeningen.fi>', email
-            content = "Hej " + first_name + " " + last_name + ",\n\nDin anmälning till Fest1 efterfesten har registrerats.\nVänligen betala festen på förhand senast 27.9\nKonto: FI91 1378 3500 1681 88\nMottagare: Annika Lehto\nMeddelande: Fest1, " + first_name + " " + last_name + \
+            subject, sender, recipient = 'Anmälan till Fest 1', 'Christian Segercrantz <phuxmastare@teknologforeningen.fi>', email
+            content = "Hej " + first_name + " " + last_name + ",\n\nDin anmälning till Fest1 efterfesten har registrerats.\nVänligen betala festen på förhand senast 3.10\nKonto: FI66 4055 0012 5982 11\nMottagare: Christian Segercrantz\nMeddelande: Fest1, " + first_name + " " + last_name + \
                       "\nSumma: 5 €\n\nFör att få festen till förköpspris ska du ha med ett kvitto från nätbanken på att du har betalat (om vi inte kan se din betalning kostar efterfesten 7€). Var också beredd att bestyrka din identitet!\nVälkommen!"
             send_mail(subject, content, sender, [email], fail_silently=False)
             return render(request, "confirm.html")
