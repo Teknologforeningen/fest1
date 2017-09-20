@@ -18,4 +18,4 @@ class Participant(models.Model):
 class AfterpartyParticipant(models.Model):
     first_name = models.CharField(max_length=64)
     last_name = models.CharField(max_length=64)
-    email = models.EmailField()
+    email = models.EmailField(unique=True)
