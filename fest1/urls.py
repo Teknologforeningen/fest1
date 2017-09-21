@@ -16,11 +16,13 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
+from fest1_reg import views
+
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', 'fest1_reg.views.homepage', name='home'),
-    url(r'^register/$', 'fest1_reg.views.register', name='register'),
-    url(r'^participants/$', 'fest1_reg.views.list_page', name='participants'),
-    url(r'^afterparty/$', 'fest1_reg.views.afterparty', name='afterparty'),
-    url(r'^i/$', 'fest1_reg.views.phuxk', name='phuxk'),
+    url(r'^admin/', admin.site.urls),
+    url(r'^$', views.homepage, name='home'),
+    url(r'^register/$', views.register, name='register'),
+    url(r'^participants/$', views.list_page, name='participants'),
+    url(r'^afterparty/$', views.afterparty, name='afterparty'),
+    url(r'^i/$', views.phuxk, name='phuxk'),
 ]
