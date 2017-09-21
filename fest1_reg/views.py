@@ -5,6 +5,7 @@ from django.core.validators import validate_email
 from django.core.mail import send_mail
 from django import forms
 from django.contrib.auth import login, authenticate
+from django.db import IntegrityError
 import time
 
 # Create your views here.
@@ -37,7 +38,11 @@ def register(request):
             diet = request.POST['diet']
             comment = request.POST['comment']
             new_participant = Participant(first_name=first_name, last_name=last_name, email=email, organization=organization, avec=avec, alcoholfree=alcoholfree, diet=diet, comment=comment)
-            new_participant.save()
+            try:
+				new_participant.save()
+			except IntegrityError:
+				return HttpResponse("<p>Din e-postadress har redan använts i en anmälning. En bekräftelse borde ha skickats till den.</p><p><a href='./'>Tillbaka</a></p>")
+			
             subject, sender, recipient = 'Anmälan till Fest 1', 'Christian Segercrantz <phuxmastare@teknologforeningen.fi>', email
             if (Participant.objects.filter(organization=organization_code).count() >= Organization.objects.get(pk=organization_code).quota):
                 content = "Hej " + first_name + " " + last_name + ",\n\nDin anmälning till Fest 1 har registrerats. Du är ännu på reservplats och vi meddelar efter sista anmälningsdag om du ryms med på festen!"
@@ -73,7 +78,11 @@ def afterparty(request):
                 return HttpResponse("<p>Din e-postadress är inte giltig, vänligen försök på nytt</p><p><a href='./'>Tillbaka</a></p>")
 
             new_participant = AfterpartyParticipant(first_name=first_name, last_name=last_name, email=email)
-            new_participant.save()
+            try:
+				new_participant.save()
+			except IntegrityError:
+				return HttpResponse("<p>Din e-postadress har redan använts i en anmälning. En bekräftelse borde ha skickats till den.</p><p><a href='./'>Tillbaka</a></p>")
+				
             subject, sender, recipient = 'Anmälan till Fest 1', 'Christian Segercrantz <phuxmastare@teknologforeningen.fi>', email
             content = "Hej " + first_name + " " + last_name + ",\n\nDin anmälning till Fest1 efterfesten har registrerats.\nVänligen betala festen på förhand senast 3.10\nKonto: FI66 4055 0012 5982 11\nMottagare: Christian Segercrantz\nMeddelande: Fest1, " + first_name + " " + last_name + \
                       "\nSumma: 5 €\n\nFör att få festen till förköpspris ska du ha med ett kvitto från nätbanken på att du har betalat (om vi inte kan se din betalning kostar efterfesten 7€). Var också beredd att bestyrka din identitet!\nVälkommen!"
