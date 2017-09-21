@@ -29,10 +29,12 @@ def register(request):
             organization_code = request.POST['organization']
             organization = Organization.objects.get(pk=organization_code)
             avec = request.POST['avec']
-            alcoholfree = request.POST.get('alcoholfree', False)
-            alcoholfree_sv = "Nej"
-            price = "20 €"
-            if alcoholfree:
+            if request.POST.get('alcoholfree', False) != 'on':
+                alcoholfree = False
+                alcoholfree_sv = "Nej"
+                price = "20 €"
+            else:
+                alcoholfree = True
                 alcoholfree_sv = "Ja"
                 price = "18 €"
             diet = request.POST['diet']
@@ -41,7 +43,7 @@ def register(request):
             try:
                 new_participant.save()
             except IntegrityError:
-                return HttpResponse("<p>Din e-postadress har redan använts i en anmälning. En bekräftelse borde ha skickats till den.</p><p><a href='./'>Tillbaka</a></p>")
+                return render(request, "emailused.html")
             
             subject, sender, recipient = 'Anmälan till Fest 1', 'Christian Segercrantz <phuxmastare@teknologforeningen.fi>', email
             if (Participant.objects.filter(organization=organization_code).count() >= Organization.objects.get(pk=organization_code).quota):
@@ -81,7 +83,7 @@ def afterparty(request):
             try:
                 new_participant.save()
             except IntegrityError:
-                return HttpResponse("<p>Din e-postadress har redan använts i en anmälning. En bekräftelse borde ha skickats till den.</p><p><a href='./'>Tillbaka</a></p>")
+                return render(request, "emailused.html")
 
             subject, sender, recipient = 'Anmälan till Fest 1', 'Christian Segercrantz <phuxmastare@teknologforeningen.fi>', email
             content = "Hej " + first_name + " " + last_name + ",\n\nDin anmälning till Fest1 efterfesten har registrerats.\nVänligen betala festen på förhand senast 3.10\nKonto: FI66 4055 0012 5982 11\nMottagare: Christian Segercrantz\nMeddelande: Fest1, " + first_name + " " + last_name + \
