@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ''
+SECRET_KEY = '822$mrku11yqm7#m4$6f6*5c($nmoo9)z!)ncoegvj9f!m0*f7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -45,7 +45,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -56,7 +55,9 @@ ROOT_URLCONF = 'fest1.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'fest1_reg/templates')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -77,11 +78,8 @@ WSGI_APPLICATION = 'fest1.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'fest1',
-        'USER': 'postgres',
-        'PASSWORD': '',
-        'HOST': 'localhost'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'fest1.sqlite3',
     }
 }
 
@@ -110,8 +108,5 @@ STATICFILES_DIRS = (
 STATIC_URL = '/static/'
 # STATIC_ROOT = './static/'
 
-TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'fest1_reg/templates'),
-)
-
-EMAIL_HOST = 'smtp.ayy.fi'
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 8025

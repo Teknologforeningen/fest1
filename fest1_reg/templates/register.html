@@ -27,9 +27,14 @@
 
                 </select>
               </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" name="halarmarke" id="halarmarke"> Halarmärke (+ 2€)
+                </label>
+              </div>
               <div class="form-group">
                 <label for="avec">Avec</label>
-                  <p><strong>Obs:</strong> Avec (också förstaårsstuderande) måste anmäla sig skilt!</p>
+                <p><strong>Obs:</strong> Avec (också förstaårsstuderande) måste anmäla sig skilt!</p>
                 <input type="text" class="form-control" name="avec" id="avec" placeholder="Avec">
               </div>
               <div class="checkbox">
@@ -39,7 +44,15 @@
               </div>
               <div class="form-group">
                 <label for="diet">Allergier/specialdiet</label>
-                <input type="text" class="form-control" name="diet" id="diet" placeholder="Allergier/specialdiet">
+                <select class="form-control" name="diet" id="diet" multiple>
+                  <option value="Vegetarian">Vegetarian</option>
+                  <option value="Vegan">Vegan</option>
+                  <option value="Glutenfri">Glutenfri</option>
+                  <option value="Laktosfri">Laktosfri</option>
+                  <option value="Mjölkfri">Mjölkfri</option>
+                  <option value="Äppel">Äppel</option>
+                  <option value="Nötter">Nötter</option>
+                </select>
               </div>
               <div class="form-group">
                 <label for="comment">Kommentarer</label>

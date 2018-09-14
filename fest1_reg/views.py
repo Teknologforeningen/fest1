@@ -14,10 +14,11 @@ def homepage(request):
 
 def register(request):
     current_time = int(time.time())
-    if current_time > 1509357600:
+    if current_time > 1539032100:
         return render(request, "closed.html")
-    elif current_time > 1506070800:
+    elif current_time > 1537520400:
         if request.method == 'POST':
+            price = 20
             first_name = request.POST['first_name']
             last_name = request.POST['last_name']
             email = request.POST['email']
@@ -28,30 +29,37 @@ def register(request):
 
             organization_code = request.POST['organization']
             organization = Organization.objects.get(pk=organization_code)
+            if request.POST.get('halarmarke', False) != 'on':
+                halarmarke = False
+                halarmarke_sv = "Nej"
+            else:
+                halarmarke = True
+                halarmarke_sv = "Ja"
+                price += 2
             avec = request.POST['avec']
             if request.POST.get('alcoholfree', False) != 'on':
                 alcoholfree = False
                 alcoholfree_sv = "Nej"
-                price = "20 €"
             else:
                 alcoholfree = True
                 alcoholfree_sv = "Ja"
-                price = "18 €"
-            diet = request.POST['diet']
+                price -= 2
+            diet = " ".join(request.POST.getlist('diet'))
             comment = request.POST['comment']
-            new_participant = Participant(first_name=first_name, last_name=last_name, email=email, organization=organization, avec=avec, alcoholfree=alcoholfree, diet=diet, comment=comment)
+            new_participant = Participant(first_name=first_name, last_name=last_name, email=email, organization=organization, avec=avec, alcoholfree=alcoholfree, diet=diet, comment=comment, halarmarke=halarmarke)
             try:
                 new_participant.save()
             except IntegrityError:
                 return render(request, "emailused.html")
             
-            subject, sender, recipient = 'Anmälan till Fest 1', 'Christian Segercrantz <phuxmastare@teknologforeningen.fi>', email
+            subject, sender, recipient = 'Anmälan till Fest 1', 'Axel Cedercreutz <phuxmastare@teknologforeningen.fi>', email
             if (Participant.objects.filter(organization=organization_code).count() >= Organization.objects.get(pk=organization_code).quota):
-                content = "Hej " + first_name + " " + last_name + ",\n\nDin anmälning till Fest 1 har registrerats. Du är ännu på reservplats och vi meddelar efter sista anmälningsdag om du ryms med på festen!"
+                content = "Hej " + first_name + " " + last_name + ",\n\nDin anmälning till Fest 1 har registrerats. Du är ännu på reservplats och vi meddelar efter sista anmälningsdagen om du ryms med på festen!"
             else:
-                content = "Hej " + first_name + " " + last_name + ",\n\nDin anmälning till Fest 1 har registrerats:\nOrganisation: " + organization.name + "\nAvec: " + avec + "\nAlkoholfri: " + alcoholfree_sv + "\nKommentarer: " + comment + \
-                      "\n\nVänligen betala för din sitz på förhand senast 3.10 (kontrollera från http://www.fest1.fi/participants/ att du inte står på reservkön!).\nKonto: FI66 4055 0012 5982 11\nMottagare: Christian Segercrantz\nMeddelande: Fest1, " + first_name + " " + last_name + "\nSumma: " + \
-                      price + "\n\nVar beredd på att kunna bestyrka din identitet!\nVälkommen!"
+                content = "Hej " + first_name + " " + last_name + ",\n\nDin anmälning till Fest 1 har registrerats:\nOrganisation: " + organization.name + "\nHalarmärke: " + halarmarke_sv + "\nAvec: " + avec + "\nAlkoholfri: " + alcoholfree_sv + "\nKommentarer: " + comment + \
+                     "\n\nVänligen betala för din sitz på förhand senast 8.10 (kontrollera från http://www.fest1.fi/participants/ att du inte står på reservkön!).\nKonto: FI79 5788 5920 0095 82\nMottagare: Axel Cedercreutz\nMeddelande: Fest1, " + first_name + " " + last_name + "\nSumma: " + \
+                     str(price) + "€\n\nVar beredd på att kunna bestyrka din identitet!\nVälkommen!"
+
             send_mail(subject, content, sender, [email], fail_silently=False)
             return render(request, "confirm.html")
         else:
@@ -67,10 +75,11 @@ def register(request):
 
 def afterparty(request):
     current_time = int(time.time())
-    if current_time > 1509357600:
+    if current_time > 1539349200:
         return render(request, "closed.html")
-    elif current_time > 1506070800:
+    elif current_time > 1537520400:
         if request.method == 'POST':
+            price = 5
             first_name = request.POST['first_name']
             last_name = request.POST['last_name']
             email = request.POST['email']
@@ -79,15 +88,31 @@ def afterparty(request):
             except forms.ValidationError:
                 return HttpResponse("<p>Din e-postadress är inte giltig, vänligen försök på nytt</p><p><a href='./'>Tillbaka</a></p>")
 
-            new_participant = AfterpartyParticipant(first_name=first_name, last_name=last_name, email=email)
+            if request.POST.get('halarmarke', False) != 'on':
+                halarmarke = False
+                details = "Halarmärke: Nej\nVIP: Nej"
+            else:
+                halarmarke = True
+                details = "Halarmärke: Ja\nVIP: Nej"
+                price += 2
+            if request.POST.get('vip', False) != 'on':
+                vip = False
+            else:
+                vip = True
+                halarmarke = True
+                details = "VIP: Ja"
+                price = 15 #Overwrites the price += 2 above
+
+            new_participant = AfterpartyParticipant(first_name=first_name, last_name=last_name, email=email, halarmarke=halarmarke, vip=vip)
             try:
                 new_participant.save()
             except IntegrityError:
                 return render(request, "emailused.html")
 
-            subject, sender, recipient = 'Anmälan till Fest 1', 'Christian Segercrantz <phuxmastare@teknologforeningen.fi>', email
-            content = "Hej " + first_name + " " + last_name + ",\n\nDin anmälning till Fest1 efterfesten har registrerats.\nVänligen betala festen på förhand senast 3.10\nKonto: FI66 4055 0012 5982 11\nMottagare: Christian Segercrantz\nMeddelande: Fest1, " + first_name + " " + last_name + \
-                      "\nSumma: 5 €\n\nFör att få festen till förköpspris ska du ha med ett kvitto från nätbanken på att du har betalat (om vi inte kan se din betalning kostar efterfesten 7€). Var också beredd att bestyrka din identitet!\nVälkommen!"
+            subject, sender, recipient = 'Anmälan till Fest 1', 'Axel Cedercreutz <phuxmastare@teknologforeningen.fi>', email
+            content = "Hej " + first_name + " " + last_name + ",\n\nDin anmälning till Fest1 efterfesten har registrerats:\n" + details + "\n\nVänligen betala festen på förhand senast 8.10\nKonto: FI79 5788 5920 0095 82\nMottagare: Axel Cedercreutz\nMeddelande: Fest1, " + first_name + " " + last_name + \
+                     "\nSumma: " + str(price) + "€\n\nFör att få festen till förköpspris ska du ha med ett kvitto från nätbanken på att du har betalat (om vi inte kan se din betalning kostar efterfesten 8€). Var också beredd att bestyrka din identitet!\nVälkommen!"
+
             send_mail(subject, content, sender, [email], fail_silently=False)
             return render(request, "confirm.html")
         else:
@@ -109,7 +134,7 @@ def list_page(request):
     return render(request, "list.html", {"lists": lists, "quotas": quotas, "reserve": reserve, })
 
 def phuxk(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         participant_list = Participant.objects.all().order_by('id')
         afterparty_list = AfterpartyParticipant.objects.all().order_by('id')
         return render(request, "phuxk.html", {"participant_list": participant_list, "afterparty_list": afterparty_list, })

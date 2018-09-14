@@ -1,7 +1,7 @@
 body {
   padding-top: 50px;
-  font-family: 'Montserrat', sans-serif;
-  background: url('../images/bg.jpg') no-repeat center center fixed;
+  font-family: 'Roboto', sans-serif;
+  background: url('../images/bg.svg') no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
