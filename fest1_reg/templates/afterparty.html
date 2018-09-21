@@ -23,7 +23,11 @@
               </div>
               <div class="checkbox">
                 <label>
-                  <input type="checkbox" name="vip" id="vip"> VIP (15€) VIP-biljetten innehåller egen kö + garderob, halarmärke och ett glas skumppa.
+                  {% if vipleft %}
+                      <input type="checkbox" name="vip" id="vip"> VIP (15€) VIP-biljetten innehåller egen kö + garderob, halarmärke och ett glas skumppa.
+                  {% else %}
+                      VIP-biljetterna är slutsålda.
+                  {% endif %}
                 </label>
               </div>
               <button type="submit" class="btn btn-primary">Skicka</button>

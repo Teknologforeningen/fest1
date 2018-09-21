@@ -18,6 +18,8 @@ def register(request):
         return render(request, "closed.html")
     elif current_time > 1537520400:
         if request.method == 'POST':
+            for key,val in request.POST.items():
+               print(key, "=>", val)
             price = 20
             first_name = request.POST['first_name']
             last_name = request.POST['last_name']
@@ -44,7 +46,21 @@ def register(request):
                 alcoholfree = True
                 alcoholfree_sv = "Ja"
                 price -= 2
-            diet = " ".join(request.POST.getlist('diet'))
+            diet = ""
+            if request.POST.get('vegetarian', False) == 'on':
+                diet += "Vegetarian "
+            if request.POST.get('vegan', False) == 'on':
+                diet += "Vegan "
+            if request.POST.get('glutenfree', False) == 'on':
+                diet += "Glutenfri "
+            if request.POST.get('lactosefree', False) == 'on':
+                diet += "Laktosfri "
+            if request.POST.get('milkfree', False) == 'on':
+                diet += "Mjölkfri "
+            if request.POST.get('apple', False) == 'on':
+                diet += "Äppel "
+            if request.POST.get('nuts', False) == 'on':
+                diet += "Nötter "
             comment = request.POST['comment']
             new_participant = Participant(first_name=first_name, last_name=last_name, email=email, organization=organization, avec=avec, alcoholfree=alcoholfree, diet=diet, comment=comment, halarmarke=halarmarke)
             try:
@@ -56,7 +72,8 @@ def register(request):
             if (Participant.objects.filter(organization=organization_code).count() >= Organization.objects.get(pk=organization_code).quota):
                 content = "Hej " + first_name + " " + last_name + ",\n\nDin anmälning till Fest 1 har registrerats. Du är ännu på reservplats och vi meddelar efter sista anmälningsdagen om du ryms med på festen!"
             else:
-                content = "Hej " + first_name + " " + last_name + ",\n\nDin anmälning till Fest 1 har registrerats:\nOrganisation: " + organization.name + "\nHalarmärke: " + halarmarke_sv + "\nAvec: " + avec + "\nAlkoholfri: " + alcoholfree_sv + "\nKommentarer: " + comment + \
+                content = "Hej " + first_name + " " + last_name + ",\n\nDin anmälning till Fest 1 har registrerats:" + \
+                     "\nOrganisation: " + organization.name + "\nHalarmärke: " + halarmarke_sv + "\nAvec: " + avec + "\nAlkoholfri: " + alcoholfree_sv + "\nAllergier/Specialdieter: " + diet + "\nKommentarer: " + comment + \
                      "\n\nVänligen betala för din sitz på förhand senast 8.10 (kontrollera från http://www.fest1.fi/participants/ att du inte står på reservkön!).\nKonto: FI79 5788 5920 0095 82\nMottagare: Axel Cedercreutz\nMeddelande: Fest1, " + first_name + " " + last_name + "\nSumma: " + \
                      str(price) + "€\n\nVar beredd på att kunna bestyrka din identitet!\nVälkommen!"
 
@@ -102,6 +119,9 @@ def afterparty(request):
                 halarmarke = True
                 details = "VIP: Ja"
                 price = 15 #Overwrites the price += 2 above
+                
+            if vip and AfterpartyParticipant.objects.filter(vip=True).count() >= 50:
+              return HttpResponse("<p>Alla VIP-biljetter har redan sålts.</p><p><a href='./'>Tillbaka</a></p>")
 
             new_participant = AfterpartyParticipant(first_name=first_name, last_name=last_name, email=email, halarmarke=halarmarke, vip=vip)
             try:
@@ -116,7 +136,8 @@ def afterparty(request):
             send_mail(subject, content, sender, [email], fail_silently=False)
             return render(request, "confirm.html")
         else:
-            return render(request, "afterparty.html")
+            vipleft = AfterpartyParticipant.objects.filter(vip=True).count() < 50
+            return render(request, "afterparty.html", {"vipleft": vipleft, })
     else:
         return render(request, "soon.html")
 

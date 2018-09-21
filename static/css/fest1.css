@@ -72,6 +72,8 @@ body {
 .footer_logo {
     text-align: center;
     margin-bottom: 40px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .intro {
