@@ -18,8 +18,6 @@ def register(request):
         return render(request, "closed.html")
     elif current_time > 1537520400:
         if request.method == 'POST':
-            for key,val in request.POST.items():
-               print(key, "=>", val)
             price = 20
             first_name = request.POST['first_name']
             last_name = request.POST['last_name']
@@ -31,13 +29,15 @@ def register(request):
 
             organization_code = request.POST['organization']
             organization = Organization.objects.get(pk=organization_code)
-            if request.POST.get('halarmarke', False) != 'on':
-                halarmarke = False
-                halarmarke_sv = "Nej"
-            else:
-                halarmarke = True
-                halarmarke_sv = "Ja"
-                price += 2
+#            if request.POST.get('halarmarke', False) != 'on':
+#                halarmarke = False
+#                halarmarke_sv = "Nej"
+#            else:
+#                halarmarke = True
+#                halarmarke_sv = "Ja"
+#                price += 2
+            halarmarke = False
+            halarmarke_sv = "Nej"
             avec = request.POST['avec']
             if request.POST.get('alcoholfree', False) != 'on':
                 alcoholfree = False
@@ -105,13 +105,16 @@ def afterparty(request):
             except forms.ValidationError:
                 return HttpResponse("<p>Din e-postadress är inte giltig, vänligen försök på nytt</p><p><a href='./'>Tillbaka</a></p>")
 
-            if request.POST.get('halarmarke', False) != 'on':
-                halarmarke = False
-                details = "Halarmärke: Nej\nVIP: Nej"
-            else:
-                halarmarke = True
-                details = "Halarmärke: Ja\nVIP: Nej"
-                price += 2
+#            if request.POST.get('halarmarke', False) != 'on':
+#                halarmarke = False
+#                details = "Halarmärke: Nej\nVIP: Nej"
+#            else:
+#                halarmarke = True
+#                details = "Halarmärke: Ja\nVIP: Nej"
+#                price += 2
+            halarmarke = False
+            details = "Halarmärke: Nej\nVIP: Nej"
+
             if request.POST.get('vip', False) != 'on':
                 vip = False
             else:
