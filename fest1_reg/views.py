@@ -69,7 +69,7 @@ def register(request):
                 return render(request, "emailused.html")
             
             subject, sender, recipient = 'Anmälan till Fest 1', 'Axel Cedercreutz <phuxmastare@teknologforeningen.fi>', email
-            if (Participant.objects.filter(organization=organization_code).count() >= Organization.objects.get(pk=organization_code).quota):
+            if (Participant.objects.filter(organization=organization_code).count() > Organization.objects.get(pk=organization_code).quota):
                 content = "Hej " + first_name + " " + last_name + ",\n\nDin anmälning till Fest 1 har registrerats. Du är ännu på reservplats och vi meddelar efter sista anmälningsdagen om du ryms med på festen!"
             else:
                 content = "Hej " + first_name + " " + last_name + ",\n\nDin anmälning till Fest 1 har registrerats:" + \
@@ -82,7 +82,7 @@ def register(request):
         else:
             organizations_list = {}
             for i in range(0, Organization.objects.count()):
-                if Participant.objects.filter(organization=i+1).count() >= Organization.objects.get(pk=i+1).quota:
+                if Participant.objects.filter(organization=i+1).count() > Organization.objects.get(pk=i+1).quota:
                     organizations_list[i+1] = Organization.objects.get(pk=i+1).name + " (RESERVPLATS)"
                 else:
                     organizations_list[i+1] = Organization.objects.get(pk=i+1).name
